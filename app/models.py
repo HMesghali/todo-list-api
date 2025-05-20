@@ -4,6 +4,9 @@ from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
 
 
+# ----------------------
+# USER
+# ----------------------
 # User's shared properties
 class UserBase(SQLModel):
 	email: EmailStr = Field(unique=True, index=True, max_length=255)
@@ -32,10 +35,47 @@ class UserPublic(UserBase):
 
 
 # Users' public model
-class UsersPublic(UserBase):
+class UsersPublic(SQLModel):
 	data: list[UserPublic]
 	count: int
 
 
-class Item(SQLModel, table=True):
+# ----------------------
+# Item
+# ----------------------
+# Todo's shared properties
+class ItemBase(SQLModel):
+	title: str = Field(min_length=1, max_length=255)
+	description: str | None = Field(default=None, max_length=255)
+
+
+# Todo's create model
+class ItemCreate(ItemBase):
 	pass
+
+
+# Todo's update model
+class ItemUpdate(ItemBase):
+	title: str | None = Field(min_length=1, max_length=255)  # type: ignore
+	description: str | None = Field(max_length=255)  # type: ignore
+
+
+# Todo's database model
+class Item(ItemBase, table=True):
+	id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+	owner_id: uuid.UUID = Field(
+		foreign_key='user.id', nullable=False, ondelete='CASCADE'
+	)
+	owner: User = Relationship(back_populates='items')
+
+
+# Todo's public model
+class ItemPublic(ItemBase):
+	id: uuid.UUID
+	owner_id: uuid.UUID
+
+
+# Todos' public model
+class ItemsPublic(SQLModel):
+	data: list[ItemPublic]
+	count: int
