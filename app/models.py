@@ -56,8 +56,8 @@ class ItemCreate(ItemBase):
 
 # Todo's update model
 class ItemUpdate(ItemBase):
-	title: str | None = Field(min_length=1, max_length=255)  # type: ignore
-	description: str | None = Field(max_length=255)  # type: ignore
+	title: str | None = Field(default=None, min_length=1, max_length=255)  # type: ignore
+	description: str | None = Field(default=None, max_length=255)  # type: ignore
 
 
 # Todo's database model
