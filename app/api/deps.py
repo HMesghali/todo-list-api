@@ -2,14 +2,14 @@ from collections.abc import Generator
 from typing import Annotated
 
 import jwt
-from core.db import engine
-from core.security import SECRET_KEY, SECURITY_ALGORITHM
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from sqlmodel import Session
 
+from app.core.db import engine
+from app.core.security import SECRET_KEY, SECURITY_ALGORITHM
 from app.models import TokenPayload, User
 
 reusable_oath2 = OAuth2PasswordBearer(tokenUrl='token')
