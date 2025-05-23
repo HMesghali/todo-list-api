@@ -52,6 +52,23 @@ def update_todo(
 
 
 # delete a todo
+@router.delete('/{id}', status_code=status.HTTP_200_OK)
+def delete_todo(
+	*, session: SessionDep, current_user: CurrentUser, id: uuid.UUID
+) -> Any:
+	item = session.get(Item, id)
+	if not item:
+		raise HTTPException(
+			status_code=status.HTTP_404_NOT_FOUND, detail='Item not found!'
+		)
+	if item.owner_id != current_user.id:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST, detail='Not allowed!'
+		)
+	session.delete(item)
+	session.commit()
+	return {'Message': 'Item Deleted Successfully'}
+
 
 # get a todo
 
