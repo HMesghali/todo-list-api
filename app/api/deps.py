@@ -12,7 +12,7 @@ from app.core.db import engine
 from app.core.security import SECRET_KEY, SECURITY_ALGORITHM
 from app.models import TokenPayload, User
 
-reusable_oath2 = OAuth2PasswordBearer(tokenUrl='token')
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl='token')
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -20,7 +20,7 @@ def get_db() -> Generator[Session, None, None]:
 		yield session
 
 
-TokenDep = Annotated[str, Depends(reusable_oath2)]
+TokenDep = Annotated[str, Depends(reusable_oauth2)]
 SessionDep = Annotated[Session, Depends(get_db)]
 
 
