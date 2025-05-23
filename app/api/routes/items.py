@@ -2,9 +2,10 @@ import uuid
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
+from sqlmodel import select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Item, ItemCreate, ItemPublic, ItemUpdate
+from app.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
 
 router = APIRouter(prefix='/todos', tags=['todos'])
 
@@ -68,6 +69,24 @@ def delete_todo(
 	session.delete(item)
 	session.commit()
 	return {'Message': 'Item Deleted Successfully'}
+
+
+@router.get('/', status_code=status.HTTP_200_OK, response_model=ItemsPublic)
+def read_items(
+	*,
+	session: SessionDep,
+	current_user: CurrentUser,
+	skip: int = 0,
+	limit: int = 100,
+) -> Any:
+	statement = (
+		select(Item)
+		.where(Item.owner_id == current_user.id)
+		.offset(skip)
+		.limit(limit)
+	)
+	items = session.exec(statement).all()
+	return items
 
 
 # get a todo
