@@ -12,14 +12,14 @@ from app.models import Token
 router = APIRouter(tags=['login'])
 
 
-@router.post('/login/access-token')
+@router.post('/token')
 def login_access_token(
 	*,
 	session: SessionDep,
-	form_date: Annotated[OAuth2PasswordRequestForm, Depends()],
+	form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ):
 	user = crud.authenticate(
-		session=session, email=form_date.username, password=form_date.password
+		session=session, email=form_data.username, password=form_data.password
 	)
 	if not user:
 		raise HTTPException(
