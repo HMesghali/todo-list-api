@@ -1,3 +1,4 @@
+import uuid
 from collections.abc import Generator
 from typing import Annotated
 
@@ -27,7 +28,7 @@ SessionDep = Annotated[Session, Depends(get_db)]
 def get_current_user(session: SessionDep, token: TokenDep) -> User:
 	try:
 		payload = jwt.decode(
-			token, secret_key=SECRET_KEY, algorithms=[SECURITY_ALGORITHM]
+			token, SECRET_KEY, algorithms=[SECURITY_ALGORITHM]
 		)
 		token_data = TokenPayload(**payload)
 	except (InvalidTokenError, ValidationError):
@@ -35,7 +36,16 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
 			status_code=status.HTTP_403_FORBIDDEN,
 			detail='Could not validate credentials',
 		)
-	user = session.get(User, token_data.sub)
+	# Convert the `sub` field to a UUID object
+	try:
+		user_id = uuid.UUID(token_data.sub)
+	except ValueError:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST,
+			detail='Invalid user ID format in token',
+		)
+
+	user = session.get(User, user_id)
 	if not user:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 	if not user.is_active:
