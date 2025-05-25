@@ -27,7 +27,7 @@ SessionDep = Annotated[Session, Depends(get_db)]
 def get_current_user(session: SessionDep, token: TokenDep) -> User:
 	try:
 		payload = jwt.decode(
-			token, secret_key=SECRET_KEY, algorithms=SECURITY_ALGORITHM
+			token, secret_key=SECRET_KEY, algorithms=[SECURITY_ALGORITHM]
 		)
 		token_data = TokenPayload(**payload)
 	except (InvalidTokenError, ValidationError):
