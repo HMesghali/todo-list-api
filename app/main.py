@@ -17,7 +17,8 @@ def hello_world():
 @app.get('/scalar', include_in_schema=False)
 def get_scalar_docs():
 	return get_scalar_api_reference(
-		openapi_url=app.openapi_url, title='Scalar Documentation API'
+		openapi_url=app.openapi_url,  # type: ignore
+		title='Scalar Documentation API',
 	)
 
 
