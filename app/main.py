@@ -35,8 +35,4 @@ def get_scalar_docs():
 	)
 
 
-# @app.on_event(event_type='startup')
-# def on_startup():
-
-
 app.include_router(api_router)
