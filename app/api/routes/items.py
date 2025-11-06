@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlmodel import select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
+from app.models import Item, ItemCreate, ItemPublic, ItemUpdate
 
 router = APIRouter(prefix='/todos', tags=['todos'])
 
@@ -71,7 +71,9 @@ def delete_todo(
 	return {'Message': 'Item Deleted Successfully'}
 
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=ItemsPublic)
+@router.get(
+	'/', status_code=status.HTTP_200_OK, response_model=list[ItemPublic]
+)
 def read_items(
 	*,
 	session: SessionDep,
@@ -99,4 +101,4 @@ def read_item(
 		raise HTTPException(status_code=404, detail='Item not found')
 	if not current_user.is_superuser and (item.owner_id != current_user.id):
 		raise HTTPException(status_code=400, detail='Not enough permissions')
-	return Item
+	return item
