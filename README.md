@@ -4,7 +4,7 @@ A RESTful API built with FastAPI, designed to allow users to manage their person
 
 ## 🎯 Project Overview
 
-This project provides a complete solution for user authentication and managing to-do items. It serves as a practical application of FastAPI for building robust and efficient backend services[2][3].
+This project provides a complete solution for user authentication and managing to-do items. It serves as a practical application of FastAPI for building robust and efficient backend services.
 
 ## 🚀 Features
 
@@ -12,7 +12,7 @@ This project provides a complete solution for user authentication and managing t
 - **Todo Management**: Create, read, update, and delete (CRUD) operations for personal to-do items
 - **User Management**: Basic user profile functionalities
 - **SQLite Database**: Lightweight and easy-to-use database for data storage
-- **FastAPI**: Leveraging FastAPI's speed, automatic documentation, and developer-friendly features[2]
+- **FastAPI**: Leveraging FastAPI's speed, automatic documentation, and developer-friendly features
 
 ## 🛠️ Tech Stack
 
