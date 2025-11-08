@@ -1,0 +1,25 @@
+# Python cache and build artifacts
+__pycache__/
+*.pyc
+.mypy_cache/
+.coverage
+.htmlcov/
+.venv/
+*.egg-info/
+build/
+dist/
+.tox/
+.pytest_cache/
+
+# Git and environment files
+.git/
+.env
+
+# Logs and temp files
+*.log
+
+# macOS file system artifacts
+.DS_Store
+
+# IDE/editor folders (optional)
+.vscode/
